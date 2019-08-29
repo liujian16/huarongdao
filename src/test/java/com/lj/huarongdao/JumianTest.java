@@ -1,9 +1,11 @@
 package com.lj.huarongdao;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class JumianTest {
@@ -12,17 +14,31 @@ public class JumianTest {
 	public void testChildrenJumian() {
 		Jumian j = new Jumian("HCCZHCCZGG1YM00YM111".toCharArray());
 		List<Jumian> children = j.childrenJumian();
-		children.stream().forEach(System.out::println);
+		//children.stream().forEach(System.out::println);
+		Jumian expect1 = new Jumian("HCCZHCCZGG1YM01YM101".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect1));
+		Jumian expect2 = new Jumian("HCCZHCCZGG1YM10YM011".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect2));
+		Jumian expect3 = new Jumian("HCCZHCCZGG0YM01YM111".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect3));
 		
 	}
 
 	
 	@Test
 	public void testFirstZeroBelowMaochao() {
-		Jumian j = new Jumian("HCCZHCCZMGGYM11Y0011".toCharArray());
+		Jumian j = new Jumian("HCCZHCCZ0GGYM11YM011".toCharArray());
 		List<Jumian> children = j.childrenJumian();
-		children.stream().forEach(System.out::println);
-		
+		Jumian expect1 = new Jumian("0CCZHCCZHGGYM11YM011".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect1));
+		Jumian expect2 = new Jumian("HCCZHCCZGG0YM11YM011".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect2));
+		Jumian expect3 = new Jumian("HCCZHCCZMGGYM11Y0011".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect3));
+		Jumian expect4 = new Jumian("HCCZHCCZ0GGYM01YM111".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect4));
+		Jumian expect5 = new Jumian("HCCZHCCZ0GGYM11YM101".toCharArray());
+		assertThat(children, CoreMatchers.hasItem(expect5));
 	}
 
 	@Test
@@ -112,5 +128,23 @@ public class JumianTest {
 		children.stream().forEach(System.out::println);
 		
 	}
+	
+	@Test
+	public void testKeyi() {
+		Jumian j = new Jumian("HCCZHCCZMGGYM01Y1110".toCharArray());
+		List<Jumian> children = j.childrenJumian();
+		children.stream().forEach(System.out::println);
+	
+	}
+	
+	@Test
+	public void testKeyi2() {
+		Jumian j = new Jumian("HCCZHCCZM100MGGY111Y".toCharArray());
+		List<Jumian> children = j.childrenJumian();
+		children.stream().forEach(System.out::println);
+	
+	}
+	
+	
 	
 }

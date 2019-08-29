@@ -58,18 +58,109 @@ public class Jumian {
 			case 'Y':
 				newQizi[secondZeroIndex] = upQizi;
 				newQizi[secondZeroIndex - 8] = '0';
+				result.add(new Jumian(newQizi));
 				break;
 			default:
 				throw new IllegalStateException("invalid jumian: upQizi" + upQizi + "\n"+ this.toString());
 
 			}
-
-		}
 		
-		return result;
-		
-		
+		}	
 			
+		//看第二个0的右边
+		if(secondZeroIndex % 4 != 3) {
+			char[] newQizi = new char[20];
+			System.arraycopy(qizi, 0, newQizi, 0, 20);
+			char rightQizi = newQizi[secondZeroIndex  + 1];
+			switch (rightQizi) {
+			case '1':
+				newQizi[secondZeroIndex] = '1';
+				newQizi[secondZeroIndex + 1] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+			case 'G':
+				newQizi[secondZeroIndex] = 'G';
+				newQizi[secondZeroIndex + 2] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+			case 'H':
+			case 'M':
+			case 'Y':
+			case 'Z':
+			case 'C':	
+				//这几种情况，要么在第一个0的时候已经考虑过了，要么没法产生新局面
+				break;
+				
+			default:
+				throw new IllegalStateException("invalid jumian: rightQizi" + rightQizi + "\n"+ this.toString());
+			}
+			
+		}
+		//看第二个0的下面
+		if(secondZeroIndex + 4 < 20) {
+			char[] newQizi = new char[20];
+			System.arraycopy(qizi, 0, newQizi, 0, 20);
+			int downQiziIndex = secondZeroIndex + 4;
+			char downQizi = newQizi[downQiziIndex];
+			switch (downQizi) {
+			case '1':
+				newQizi[secondZeroIndex] = '1';
+				newQizi[downQiziIndex] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+			case 'H':
+			case 'Z':
+			case 'M':
+			case 'Y':
+				newQizi[secondZeroIndex] = downQizi;
+				newQizi[downQiziIndex + 4] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+			case 'G':
+			case 'C':
+				//这两种情况，要么在第一个0的时候已经考虑过了，要么没法产生新局面
+				break;
+			default:
+				throw new IllegalStateException("invalid jumian: rightQizi" + downQizi + "\n"+ this.toString());
+			}
+			
+		}
+		//看第二个0的左边的棋子
+		if(secondZeroIndex % 4 != 0) {
+			char[] newQizi = new char[20];
+			System.arraycopy(qizi, 0, newQizi, 0, 20);
+			int leftQiziIndex = secondZeroIndex - 1;
+			char leftQizi = newQizi[leftQiziIndex];
+			switch (leftQizi) {
+			case '1':
+				newQizi[secondZeroIndex] = '1';
+				newQizi[leftQiziIndex] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+			case '0':
+				break;
+			case 'H':
+			case 'Z':
+			case 'M':
+			case 'Y':
+			case 'C':
+				//这几种情况，要么在第一个0的时候已经考虑过了，要么没法产生新局面
+				break;
+			case 'G':
+				newQizi[secondZeroIndex] = 'G';
+				newQizi[leftQiziIndex - 1] = '0';
+				result.add(new Jumian(newQizi));
+				break;
+				
+			default:
+				throw new IllegalStateException("invalid jumian: rightQizi" + leftQizi + "\n"+ this.toString());
+			}
+			
+		}
+	
+		return result;
+	
+	
 	}
 
 	private void checkLeftSideOfFirstZero(List<Jumian> result, int firstZeroIndex, int secondZeroIndex) {
@@ -133,7 +224,7 @@ public class Jumian {
 			case '0':
 				break;
 			case 'G':
-				if(firstZeroIndex + 1 == secondZeroIndex && newQizi[firstZeroIndex + 5] == 'G') {
+				if(firstZeroIndex % 4 != 3 && firstZeroIndex + 1 == secondZeroIndex && newQizi[secondZeroIndex + 4] == 'G' ) {
 					newQizi[firstZeroIndex] = 'G';
 					newQizi[secondZeroIndex] = 'G';
 					newQizi[firstZeroIndex + 4] = '0';
@@ -271,7 +362,13 @@ public class Jumian {
 		}
 	}
 		
-	
+	public boolean isCaocaoCanEscape() {
+		if(qizi[17] == 'C' && qizi[18] == 'C') {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	
 	private int findSecondeZero(int firstZeroIndex) {
