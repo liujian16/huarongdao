@@ -9,6 +9,8 @@ public class Jumian {
 	
 	char[] qizi = new char[20];
 	
+	Jumian parent;
+	
 	public Jumian() {
 		
 	}
@@ -161,6 +163,14 @@ public class Jumian {
 		return result;
 	
 	
+	}
+
+	public Jumian getParent() {
+		return parent;
+	}
+
+	public void setParent(Jumian parent) {
+		this.parent = parent;
 	}
 
 	private void checkLeftSideOfFirstZero(List<Jumian> result, int firstZeroIndex, int secondZeroIndex) {
@@ -368,6 +378,47 @@ public class Jumian {
 		}else {
 			return false;
 		}
+	}
+	public Jumian getShadow() {
+		char[] newQizi = new char[20];
+		System.arraycopy(qizi, 0, newQizi, 0, 20);
+		for(int i = 0; i < newQizi.length; i++) {
+			char ch = newQizi[i];
+			switch (ch) {
+			case 'H':
+			case 'Z':
+			case 'M':
+			case 'Y':
+				newQizi[i] = 'S';
+				break;
+
+			default:
+				break;
+			}
+		}
+		return new Jumian(newQizi);
+		
+	}
+	public Jumian flip() {
+		char[] newQizi = new char[20];
+		System.arraycopy(qizi, 0, newQizi, 0, 20);
+		int cols = 4;
+		int rows = 5;
+		for(int i = 0; i < rows; i++) {
+			for(int col = 0; col < cols/2; col++)
+				swap(newQizi , i * cols + col, i * cols  + cols - col - 1);
+		}
+		return new Jumian(newQizi);		
+		
+	}
+	
+	private void swap(char[] array, int pos1 , int pos2) {
+		char tmp = array[pos1];
+		array[pos1] = array[pos2];
+		array[pos2] = tmp;
+		
+		
+		
 	}
 	
 	

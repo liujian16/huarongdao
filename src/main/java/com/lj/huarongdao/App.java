@@ -1,11 +1,10 @@
 package com.lj.huarongdao;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +18,63 @@ public class App
 {
     public static void main( String[] args ) throws Exception
     {
-        Jumian first = Jumian.first();
+       
+    		Deque<Jumian> queue = new LinkedList<>();
+    		Set<Jumian>  seen = new HashSet<>();
+    		
+    		Jumian first = Jumian.first();
+    		
+    		queue.addLast(first);
+    		seen.add(first);
+    		int step = 0;
+    		while(true) {
+    			step++;
+    			if(queue.isEmpty()) {
+    				System.out.println("Caocao can not escaped!" + "step: "  + step);
+    				break;
+    			}
+    			
+    			Jumian top = queue.pop();
+    			
+    			
+    			
+    			if(top.isCaocaoCanEscape()) {
+    				
+    				Deque<Jumian> trace = new LinkedList<Jumian>();
+    				trace.addFirst(top);
+    				while(top.getParent() != null) {
+    					trace.addFirst(top.parent);
+    					top = top.parent;
+    				}
+    				System.out.println("Caocao escaped: \n" + top + "tried: " + step + " step: " + trace.size());
+    				
+    				trace.stream().forEach(System.out::println);
+    				break;
+    			}else {
+    				List<Jumian> children = top.childrenJumian();
+    				for (Jumian child : children) {
+    					Jumian shadow = child.getShadow();
+    					if(!seen.contains(shadow) ) {
+    						child.setParent(top);
+    						seen.add(shadow);
+    						seen.add(shadow.flip());
+    					    queue.addLast(child);
+    					}
+				}
+    				
+    			}
+    		}
+    		
+    		
+    		
+    		
+    	
+    		
+    		
+    }
+
+	private static void deepFirst() {
+		Jumian first = Jumian.first();
         Stack<Jumian> stack = new Stack<>();
         Set<Jumian>  all = new HashSet<>();
         stack.push(first);
@@ -87,17 +142,5 @@ public class App
         	    		}
 			}
         }
-        
-//        stack.stream().forEach(System.out::println);
-        
-        
-        
-//    		System.out.println( " first Jumain: \n" + jumian );
-//    		List<Jumian> children = jumian.childrenJumian();
-//    		children.stream().forEach(System.out::println);
-    		
-    		
-    		
-    		
-    }
+	}
 }

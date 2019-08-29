@@ -1,6 +1,7 @@
 package com.lj.huarongdao;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -146,5 +147,13 @@ public class JumianTest {
 	}
 	
 	
+	@Test
+	public void testFlip() {
+		Jumian j = new Jumian("ZCCHZCCHGG1YM00YM111".toCharArray());
+		Jumian expected = new Jumian("HCCZHCCZY1GGY00M111M".toCharArray());
+		Jumian actual = j.flip();
+		assertEquals(expected, actual);
+	
+	}
 	
 }
